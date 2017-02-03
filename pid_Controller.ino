@@ -18,7 +18,7 @@ double I = -233.477221663654;
 double D = -5.18336719848569;
 double N = 31.522805349829;
 
-double pid_sollValue = 22.5; // deg
+double pid_sollValue = -45; // deg
 
 double pid_error;
 double pid_istValue = 0;
@@ -46,6 +46,7 @@ void setup()
 
 void loop()
 {
+
 	// Convert encoder value to degree
 	pid_istValue = encoderValue*ENCODER_TO_DEGREE;
 
@@ -60,15 +61,15 @@ void loop()
 	Serial.println(pid_output);
 
 	// Configure direction value for motor
-	// Direction input: when DIR is high (positive) current will flow from OUTA to OUTB, when it is low current will flow from OUTB to OUTA (negative).
+	// Direction input: when DIR is high (negative) current will flow from OUTA to OUTB, when it is low current will flow from OUTB to OUTA (positive).
 	if (pid_output < 0) {
-		digitalWrite(do_motorDirection, LOW);
+		digitalWrite(do_motorDirection, HIGH);
 		pid_output = pid_output*(-1);
 	}
-	else digitalWrite(do_motorDirection, HIGH);
+	else digitalWrite(do_motorDirection, LOW);
 
 	// Rotate motor
-	analogWrite(do_pwm, (int)pid_output);
+	//analogWrite(do_pwm, (int)pid_output);
 
 	delay(SAMPLE_TIME*1000);
 }
